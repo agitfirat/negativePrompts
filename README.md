@@ -31,6 +31,30 @@ pip install -r requirements.txt
 python main.py --task task_name --model model_name --pnum negativeprompt_id --few_shot False
 ```
 
+
+### Commandes rapides (copier/coller)
+Si tu as déjà cloné le repo, lance simplement :
+```sh
+cd NegativePrompt
+conda create --name negativeprompt python=3.9 -y
+conda activate negativeprompt
+pip install -r requirements.txt
+```
+
+Tester un modèle non-GPT (exemple avec `t5`) :
+```sh
+python main.py --task sentiment --model t5 --pnum 0 --few_shot False
+```
+
+Lancer la même évaluation sur plusieurs modèles non-GPT :
+```sh
+for model in t5 vicuna llama2; do
+  python main.py --task sentiment --model "$model" --pnum 0 --few_shot False
+done
+```
+
+> Remarque: `vicuna` et `llama2` nécessitent des checkpoints/serveurs locaux configurés (voir `llm_response.py`).
+
 ### Open the repository in VS Code
 1. Clone the project locally:
 ```sh
