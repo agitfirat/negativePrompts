@@ -14,16 +14,11 @@ Then,
 cd NegativePrompt
 ```
 
-To install the required packages, you can create a conda environment:
+To install the required packages, create the conda environment from the provided file:
 
 ```sh
-conda create --name negativeprompt python=3.9
-```
-
-then use pip to install required packages:
-
-```sh
-pip install -r requirements.txt
+conda env create -f environment.yml
+conda activate chatgptTool
 ```
 
 ## Usage
@@ -33,12 +28,17 @@ python main.py --task task_name --model model_name --pnum negativeprompt_id --fe
 
 
 ### Commandes rapides (copier/coller)
-Si tu as déjà cloné le repo, lance simplement :
+Si tu as déjà cloné le repo, place-toi dans le bon dossier (adapte le nom exact) :
 ```sh
-cd NegativePrompt
-conda create --name negativeprompt python=3.9 -y
-conda activate negativeprompt
-pip install -r requirements.txt
+cd ~/path/to/NegativePrompt-main
+# ou: cd ~/path/to/NegativePrompt
+pwd
+```
+
+Crée l'environnement depuis le fichier fourni par le repo :
+```sh
+conda env create -f environment.yml
+conda activate chatgptTool
 ```
 
 Tester un modèle non-GPT (exemple avec `t5`) :
