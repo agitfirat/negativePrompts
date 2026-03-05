@@ -28,16 +28,21 @@ python main.py --task task_name --model model_name --pnum negativeprompt_id --fe
 
 
 ### Commandes rapides (copier/coller)
-Si tu as déjà cloné le repo, place-toi dans le bon dossier (adapte le nom exact) :
+Si tu es déjà dans le terminal, va dans le dossier réel du repo (sans placeholder) :
 ```sh
-cd ~/path/to/NegativePrompt-main
-# ou: cd ~/path/to/NegativePrompt
+pwd
+ls
+# si tu vois NegativePrompt-main:
+cd NegativePrompt-main
+# sinon si tu vois NegativePrompt:
+# cd NegativePrompt
 pwd
 ```
 
-Crée l'environnement depuis le fichier fourni par le repo :
+Active l'environnement s'il existe déjà, sinon crée-le :
 ```sh
-conda env create -f environment.yml
+conda env list | grep chatgptTool
+conda activate chatgptTool || conda env create -f environment.yml
 conda activate chatgptTool
 ```
 
