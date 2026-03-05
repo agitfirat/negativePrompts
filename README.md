@@ -14,21 +14,108 @@ Then,
 cd NegativePrompt
 ```
 
-To install the required packages, you can create a conda environment:
+To install the required packages, create the conda environment from the provided file:
 
 ```sh
-conda create --name negativeprompt python=3.9
-```
-
-then use pip to install required packages:
-
-```sh
-pip install -r requirements.txt
+conda env create -f environment.yml
+conda activate chatgptTool
 ```
 
 ## Usage
 ```sh
 python main.py --task task_name --model model_name --pnum negativeprompt_id --few_shot False
+```
+
+
+### Commandes rapides (copier/coller)
+Si tu es déjà dans le terminal, va dans le dossier réel du repo (sans placeholder) :
+```sh
+pwd
+ls
+# si tu vois NegativePrompt-main:
+cd NegativePrompt-main
+# sinon si tu vois NegativePrompt:
+# cd NegativePrompt
+pwd
+```
+
+Active l'environnement s'il existe déjà, sinon crée-le :
+```sh
+conda env list | grep chatgptTool
+conda activate chatgptTool || conda env create -f environment.yml
+conda activate chatgptTool
+```
+
+Tester un modèle non-GPT (exemple avec `t5`) :
+```sh
+python main.py --task sentiment --model t5 --pnum 0 --few_shot False
+```
+
+Lancer la même évaluation sur plusieurs modèles non-GPT :
+```sh
+for model in t5 vicuna llama2; do
+  python main.py --task sentiment --model "$model" --pnum 0 --few_shot False
+done
+```
+
+> Remarque: `vicuna` et `llama2` nécessitent des checkpoints/serveurs locaux configurés (voir `llm_response.py`).
+
+### Open the repository in VS Code
+1. Clone the project locally:
+```sh
+git clone https://github.com/wangxu0820/NegativePrompt.git
+cd NegativePrompt
+```
+2. Open the folder in VS Code:
+```sh
+code .
+```
+3. If `code` is not available in your shell, open VS Code and use **File > Open Folder...** then select `NegativePrompt`.
+
+### Run evaluations with non-GPT models
+Supported non-GPT options in this repository are currently `t5`, `vicuna`, and `llama2`.
+
+Example command:
+```sh
+python main.py --task sentiment --model t5 --pnum 0 --few_shot False
+```
+
+Run the same task across all non-GPT models:
+```sh
+for model in t5 vicuna llama2; do
+  python main.py --task sentiment --model "$model" --pnum 0 --few_shot False
+done
+```
+
+You can replace `sentiment` by any available task (for example: `sum`, `word_in_context`, `translation_en-fr`).
+
+
+### Troubleshooting (common update issue)
+If you see:
+```text
+IndentationError: unexpected indent (llm_response.py, line 55)
+```
+your local checkout is outdated. Update your local repo and hard-reset to the latest `main`:
+```sh
+git fetch origin
+git checkout main
+git reset --hard origin/main
+```
+
+Then reactivate the environment and run again:
+```sh
+conda activate chatgptTool
+python main.py --task sentiment --model t5 --pnum 0 --few_shot False
+```
+
+If your folder is not a git repo (downloaded zip), re-clone instead:
+```sh
+cd ~/Downloads
+rm -rf NegativePrompt-latest
+git clone https://github.com/wangxu0820/NegativePrompt.git NegativePrompt-latest
+cd NegativePrompt-latest
+conda activate chatgptTool
+python main.py --task sentiment --model t5 --pnum 0 --few_shot False
 ```
 
 ## Citation
