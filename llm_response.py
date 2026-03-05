@@ -52,34 +52,7 @@ api_num = 5
 
 def get_response_from_llm(llm_model, queries, task, few_shot, api_num=4):
     model_outputs = []
-        import requests
-        API_URL = "https://api-inference.huggingface.co/models/bigscience/bloom"
-        headers = {"Authorization": ""}
-        def query(payload):
-            response = requests.post(API_URL, headers=headers, json=payload)
-            return response.json()
-        for q in queries:
-            output = None
-            while output == None or len(output) <= 0:
-                output = query({
-                    "inputs": q,
-                })
-            output = output[0]['generated_text']
-            print('Q: ', q)
-            print('OUTPUT: ', output)
-            out_list = re.findall("Answer:.*", output)
-            explain_list = re.findall("Explanation:.*", output)
-            # print(out_list)
-            output = ''
-            if len(out_list) > 0:
-                output = out_list[0].replace('Answer:', '')
-                output = output.strip()
-            if len(explain_list) > 0:
-                explain = explain_list[0].replace('Explanation:', ' ')
-                explain = explain.strip()
-                if task == 'larger_animal' or task == 'word_in_context':
-                    output += explain
-            model_outputs.append(output)
+
     if llm_model.lower() == 't5':
         from transformers import T5Tokenizer, T5ForConditionalGeneration
         # gpu-version
@@ -92,15 +65,14 @@ def get_response_from_llm(llm_model, queries, task, few_shot, api_num=4):
         # tokenizer = T5Tokenizer.from_pretrained("google/flan-t5-large")
         # model = T5ForConditionalGeneration.from_pretrained("google/flan-t5-large")
 
+        use_cuda = model.device.type == "cuda"
+
         for q in queries:
-            # cpu
-            # input_ids = tokenizer(q, return_tensors="pt").input_ids
-            # outputs = model.generate(input_ids)
-            
-            # gpu
-            input_ids = tokenizer(q, return_tensors="pt").input_ids.to("cuda")
+            input_ids = tokenizer(q, return_tensors="pt").input_ids
+            if use_cuda:
+                input_ids = input_ids.to("cuda")
             outputs = model.generate(input_ids)
-            
+
             out_text = tokenizer.decode(outputs[0])
             out_text = out_text.replace('<pad>', '')
             out_text = out_text.replace('</s>', '')
