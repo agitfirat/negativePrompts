@@ -89,6 +89,35 @@ done
 
 You can replace `sentiment` by any available task (for example: `sum`, `word_in_context`, `translation_en-fr`).
 
+
+### Troubleshooting (common update issue)
+If you see:
+```text
+IndentationError: unexpected indent (llm_response.py, line 55)
+```
+your local checkout is outdated. Update your local repo and hard-reset to the latest `main`:
+```sh
+git fetch origin
+git checkout main
+git reset --hard origin/main
+```
+
+Then reactivate the environment and run again:
+```sh
+conda activate chatgptTool
+python main.py --task sentiment --model t5 --pnum 0 --few_shot False
+```
+
+If your folder is not a git repo (downloaded zip), re-clone instead:
+```sh
+cd ~/Downloads
+rm -rf NegativePrompt-latest
+git clone https://github.com/wangxu0820/NegativePrompt.git NegativePrompt-latest
+cd NegativePrompt-latest
+conda activate chatgptTool
+python main.py --task sentiment --model t5 --pnum 0 --few_shot False
+```
+
 ## Citation
 Please cite us if you find this project helpful for your research:
 ```
