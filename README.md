@@ -31,6 +31,35 @@ pip install -r requirements.txt
 python main.py --task task_name --model model_name --pnum negativeprompt_id --few_shot False
 ```
 
+### Open the repository in VS Code
+1. Clone the project locally:
+```sh
+git clone https://github.com/wangxu0820/NegativePrompt.git
+cd NegativePrompt
+```
+2. Open the folder in VS Code:
+```sh
+code .
+```
+3. If `code` is not available in your shell, open VS Code and use **File > Open Folder...** then select `NegativePrompt`.
+
+### Run evaluations with non-GPT models
+Supported non-GPT options in this repository are currently `t5`, `vicuna`, and `llama2`.
+
+Example command:
+```sh
+python main.py --task sentiment --model t5 --pnum 0 --few_shot False
+```
+
+Run the same task across all non-GPT models:
+```sh
+for model in t5 vicuna llama2; do
+  python main.py --task sentiment --model "$model" --pnum 0 --few_shot False
+done
+```
+
+You can replace `sentiment` by any available task (for example: `sum`, `word_in_context`, `translation_en-fr`).
+
 ## Citation
 Please cite us if you find this project helpful for your research:
 ```
