@@ -30,7 +30,39 @@ conda activate chatgptTool
 Installer les dépendances supplémentaires :
 
 ```sh
-pip install transformers accelerate torch
+pip install -r requirements.txt
+```
+
+## Lancer sur Kaggle Notebook
+
+```python
+import subprocess, os
+
+# Cloner le repo (à lancer une seule fois)
+if not os.path.exists("/kaggle/working/negativePrompts"):
+    subprocess.run(["git", "clone", "-b", "branche_chen",
+                    "https://github.com/ac2408/negativePrompts",
+                    "/kaggle/working/negativePrompts"], check=True)
+
+os.chdir("/kaggle/working/negativePrompts")  # chemin absolu, stable entre cellules
+
+# Installer les dépendances
+subprocess.run(["pip", "install", "-r", "requirements.txt", "-q"], check=True)
+
+# Lancer une évaluation T5 (pas besoin de token HuggingFace)
+result = subprocess.run(
+    ["python", "main.py", "--task", "sentiment", "--model", "t5", "--pnum", "0", "--few_shot", "False"],
+    capture_output=True, text=True
+)
+print(result.stdout)
+print(result.stderr)
+```
+
+Pour Llama-2, ajouter avant le run :
+```python
+from kaggle_secrets import UserSecretsClient
+from huggingface_hub import login
+login(token=UserSecretsClient().get_secret("HF_TOKEN"))
 ```
 
 ## Prérequis pour Llama-2
